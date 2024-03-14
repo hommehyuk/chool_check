@@ -12,12 +12,21 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // latitude - 위도, longitude - 경도
   static final LatLng companyLatLng = LatLng(
-    37.5233273,
-    126.921252,
+    37.5542,
+    126.9729,
   );
   static final CameraPosition initialPosition = CameraPosition(
     target: companyLatLng,
     zoom: 15,
+  );
+  static final double distance = 100;
+  static final Circle circle = Circle(
+    circleId: CircleId('circle'),
+    center: companyLatLng,
+    fillColor: Colors.blue.withOpacity(0.5),
+    radius: distance,
+    strokeColor: Colors.blue,
+    strokeWidth: 1,
   );
 
   @override
@@ -38,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 _CustomGoogleMap(
                   initialPosition: initialPosition,
+                  circle: circle,
                 ),
                 _ChoolCheckButton(),
               ],
@@ -90,9 +100,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class _CustomGoogleMap extends StatelessWidget {
   final CameraPosition initialPosition;
+  final Circle circle;
 
   const _CustomGoogleMap({
     required this.initialPosition,
+    required this.circle,
     super.key,
   });
 
@@ -103,6 +115,9 @@ class _CustomGoogleMap extends StatelessWidget {
       child: GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: initialPosition,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: false,
+        circles: Set.from([circle]),
       ),
     );
   }
